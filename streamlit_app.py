@@ -1,5 +1,61 @@
 import streamlit as st
 import pandas as pd
+import os
+import time
+import threading
+
+DATA_DIR = "local_storage"
+ttl_arquivos_maximo = 10 #horas
+intervalo_checagem = 18000 #5 horas em segundos
+
+os.makedirs(DATA_DIR, exist_ok=True)
+
+def limpar_csvs_antigos():
+    """Remove arquivos CSV da pasta especificada que tenham mais de 'horas' de existência."""
+    while True:
+        tempo_limite = time.time() - (ttl_arquivos_maximo * 3600)
+        #teste 60 segundos
+        #tempo_limite = time.time() - 60
+
+        if os.path.exists(DATA_DIR):
+            for arquivo in os.listdir(DATA_DIR):
+                caminho_arquivo = os.path.join(DATA_DIR, arquivo)
+
+                if arquivo.endswith(".csv") and os.path.isfile(caminho_arquivo):
+                    tempo_modificacao = os.path.getmtime(caminho_arquivo)
+                    
+                    print(tempo_modificacao)
+                    print(tempo_limite)
+
+                    if tempo_modificacao < tempo_limite:
+                        os.remove(caminho_arquivo)
+                        
+        time.sleep(intervalo_checagem)  # Aguarda antes de verificar novamente
+
+# Inicia a limpeza automática em uma thread separada
+def iniciar_limpador():
+    thread = threading.Thread(target=limpar_csvs_antigos, daemon=True)
+    thread.start()
+
+# Iniciar a thread quando o Streamlit carregar
+if "limpador_iniciado" not in st.session_state:
+    iniciar_limpador()
+    st.session_state.limpador_iniciado = True
+
+def carregar_dados(aba_nome):
+    print(aba_nome)
+    file_path = os.path.join(DATA_DIR, f"{aba_nome}.csv")
+
+    if os.path.exists(file_path):
+        return pd.read_csv(file_path, index_col=False).iloc[: , 1:]
+    
+    return pd.DataFrame(columns=['I', 'II', 'III', 'IV'])
+
+def salvar_dados(aba_nome, df):
+    file_path = os.path.join(DATA_DIR, f"{aba_nome}.csv")
+    df.to_csv(file_path)
+    st.success(f"Dados de {aba_nome} salvos!")
+
 
 # Função para calcular os totais e o coeficiente
 def calcular_totais(df):
@@ -18,17 +74,27 @@ def criar_tabela_dinamica():
 
 # Função para exibir as tabelas e resultados dentro de uma aba
 def exibir_aba(aba_nome):
-    st.subheader(f"Tabela Dinâmica - {aba_nome}")
+    #st.subheader(f"Tabela Dinâmica - {aba_nome}")
+
+    # Carregar os dados do arquivo ou da sessão
+    if aba_nome not in st.session_state:
+        st.session_state[aba_nome] = carregar_dados(aba_nome)
 
     # Layout responsivo com 2 colunas (ajuste de tamanho)
     col1, col2 = st.columns([3, 1], gap="large")
     
     with col1:
-        st.write("### Tabela de Dados")
+        #st.write("### Tabela de Dados")
         # Tabela dinâmica
         df = criar_tabela_dinamica()
-        df_edit = st.data_editor(df, key=f"{aba_nome}_table", num_rows="dynamic", width=700, height=400)
-    
+        df_edit = st.data_editor(st.session_state[aba_nome], key=f"{aba_nome}_table", num_rows="dynamic", width=700, height=400)
+
+        # Botão de salvar
+        if st.button("Salvar Dados", key=f"salvar_{aba_nome}"):
+            st.session_state[aba_nome] = df_edit
+            salvar_dados(aba_nome, df_edit)
+
+
     # Calculando os totais
     total_i, total_ii, total_iii, total_iv, total, coeficiente = calcular_totais(df_edit)
 
@@ -91,15 +157,15 @@ total_esquerda_i, total_esquerda_ii, total_esquerda_iii, total_esquerda_iv = 0, 
 
 # Aba "Meio" com sub abas "Meio I", "Meio II" e "Resultado Geral Meio"
 with tab1:
-    st.subheader("Aba Meio")
+    #st.subheader("Aba Meio")
     sub_tab1, sub_tab2, sub_tab3 = st.tabs(["Meio I", "Meio II", "Resultado Geral Meio"])
     
     with sub_tab1:
-        st.subheader("Sub Aba - Meio I")
+        #st.subheader("Sub Aba - Meio I")
         total_meio1_i, total_meio1_ii, total_meio1_iii, total_meio1_iv, _, _ = exibir_aba("Meio I")
     
     with sub_tab2:
-        st.subheader("Sub Aba - Meio II")
+        #st.subheader("Sub Aba - Meio II")
         total_meio2_i, total_meio2_ii, total_meio2_iii, total_meio2_iv, _, _ = exibir_aba("Meio II")
     
     with sub_tab3:
@@ -117,15 +183,15 @@ with tab1:
 
 # Aba "Direita" com sub abas "Direita I", "Direita II" e "Resultado Geral Direita"
 with tab2:
-    st.subheader("Aba Direita")
+    #st.subheader("Aba Direita")
     sub_tab1, sub_tab2, sub_tab3 = st.tabs(["Direita I", "Direita II", "Resultado Geral Direita"])
     
     with sub_tab1:
-        st.subheader("Sub Aba - Direita I")
+        #st.subheader("Sub Aba - Direita I")
         total_direita1_i, total_direita1_ii, total_direita1_iii, total_direita1_iv, _, _ = exibir_aba("Direita I")
     
     with sub_tab2:
-        st.subheader("Sub Aba - Direita II")
+        #st.subheader("Sub Aba - Direita II")
         total_direita2_i, total_direita2_ii, total_direita2_iii, total_direita2_iv, _, _ = exibir_aba("Direita II")
     
     with sub_tab3:
@@ -143,15 +209,15 @@ with tab2:
 
 # Aba "Esquerda" com sub abas "Esquerda I", "Esquerda II" e "Resultado Geral Esquerda"
 with tab3:
-    st.subheader("Aba Esquerda")
+    #st.subheader("Aba Esquerda")
     sub_tab1, sub_tab2, sub_tab3 = st.tabs(["Esquerda I", "Esquerda II", "Resultado Geral Esquerda"])
     
     with sub_tab1:
-        st.subheader("Sub Aba - Esquerda I")
+        #st.subheader("Sub Aba - Esquerda I")
         total_esquerda1_i, total_esquerda1_ii, total_esquerda1_iii, total_esquerda1_iv, _, _ = exibir_aba("Esquerda I")
     
     with sub_tab2:
-        st.subheader("Sub Aba - Esquerda II")
+        #st.subheader("Sub Aba - Esquerda II")
         total_esquerda2_i, total_esquerda2_ii, total_esquerda2_iii, total_esquerda2_iv, _, _ = exibir_aba("Esquerda II")
     
     with sub_tab3:

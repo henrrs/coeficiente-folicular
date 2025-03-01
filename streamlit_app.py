@@ -123,6 +123,13 @@ def consolidar_resultados(total_i1, total_ii1, total_iii1, total_iv1,
     return total_geral_i, total_geral_ii, total_geral_iii, total_geral_iv, coeficiente_geral
 
 # Configuração do layout inicial do aplicativo
+
+# Definir título e favicon
+st.set_page_config(
+    page_title="CUF",
+    page_icon="🚀"  # Pode ser um emoji ou caminho para um ícone .ico/.png
+)
+
 st.title("Contagem Unidades Foliculares")
 
 # Estilo e layout geral da aplicação

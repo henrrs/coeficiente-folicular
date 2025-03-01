@@ -125,19 +125,13 @@ def consolidar_resultados(total_i1, total_ii1, total_iii1, total_iv1,
 # Configuração do layout inicial do aplicativo
 
 # Definir título e favicon
-st.set_page_config(
-    page_title="CUF",
-    page_icon="🚀"  # Pode ser um emoji ou caminho para um ícone .ico/.png
-)
+st.set_page_config(page_title="CUF", page_icon="🚀")
 
 st.title("Contagem Unidades Foliculares")
 
 # Estilo e layout geral da aplicação
 st.markdown(
     """
-    <meta property="og:title" content="CUF - Contagem de Unidades Foliculares">
-    <meta property="og:description" content="Sistema de Contagem de Unidades Foliculares.">
-    
     <style>
     .stApp {
         background-color: #f0f2f6;

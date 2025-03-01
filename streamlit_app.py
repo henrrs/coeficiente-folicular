@@ -135,6 +135,9 @@ st.title("Contagem Unidades Foliculares")
 # Estilo e layout geral da aplicação
 st.markdown(
     """
+    <meta property="og:title" content="CUF - Contagem de Unidades Foliculares">
+    <meta property="og:description" content="Sistema de Contagem de Unidades Foliculares.">
+    
     <style>
     .stApp {
         background-color: #f0f2f6;

@@ -120,7 +120,7 @@ def consolidar_resultados(total_i1, total_ii1, total_iii1, total_iv1,
     total_geral_iv = total_iv1 + total_iv2 + total_iv3
     total_geral = total_geral_i + total_geral_ii + total_geral_iii + total_geral_iv
     coeficiente_geral = (total_geral_i + 2 * total_geral_ii + 3 * total_geral_iii + 4 * total_geral_iv) / total_geral if total_geral != 0 else 0
-    return total_geral_i, total_geral_ii, total_geral_iii, total_geral_iv, coeficiente_geral
+    return total_geral_i, total_geral_ii, total_geral_iii, total_geral_iv, total_geral, coeficiente_geral
 
 # Configuração do layout inicial do aplicativo
 
@@ -242,7 +242,7 @@ with tab4:
     st.subheader("Resultados Gerais Consolidados")
 
     # Consolidando os totais
-    total_geral_i, total_geral_ii, total_geral_iii, total_geral_iv, coeficiente_geral = consolidar_resultados(
+    total_geral_i, total_geral_ii, total_geral_iii, total_geral_iv, total_geral, coeficiente_geral = consolidar_resultados(
         total_meio_i, total_meio_ii, total_meio_iii, total_meio_iv,
         total_direita_i, total_direita_ii, total_direita_iii, total_direita_iv,
         total_esquerda_i, total_esquerda_ii, total_esquerda_iii, total_esquerda_iv
@@ -253,6 +253,7 @@ with tab4:
     st.metric("Total Geral II", total_geral_ii)
     st.metric("Total Geral III", total_geral_iii)
     st.metric("Total Geral IV", total_geral_iv)
+    st.metric("Total Consolidado", total_geral)
     st.metric("Coeficiente Geral", round(coeficiente_geral, 2))
 
     # Preparando dados para exportar como Excel

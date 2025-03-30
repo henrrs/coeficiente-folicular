@@ -129,28 +129,6 @@ st.set_page_config(page_title="CUF", page_icon="🚀")
 
 st.title("Contagem Unidades Foliculares")
 
-# Estilo e layout geral da aplicação
-st.markdown(
-    """
-    <style>
-    .stApp {
-        background-color: #f0f2f6;
-    }
-    .stMetricLabel {
-        font-size: 16px;
-        color: #333;
-    }
-    .stMetricValue {
-        font-weight: bold;
-        color: #004c7f;
-    }
-    .stProgress {
-        background-color: #e0f7fa;
-    }
-    </style>
-    """, unsafe_allow_html=True
-)
-
 # Dividindo as abas principais
 tab1, tab2, tab3, tab4 = st.tabs(["Meio", "Direita", "Esquerda", "Resultados"])
 
@@ -179,11 +157,13 @@ with tab1:
         total_meio_ii = total_meio1_ii + total_meio2_ii
         total_meio_iii = total_meio1_iii + total_meio2_iii
         total_meio_iv = total_meio1_iv + total_meio2_iv
+        total_meio_consolidado = total_meio_i + total_meio_ii + total_meio_iii + total_meio_iv
 
         st.metric("Total I - Meio", total_meio_i)
         st.metric("Total II - Meio", total_meio_ii)
         st.metric("Total III - Meio", total_meio_iii)
         st.metric("Total IV - Meio", total_meio_iv)
+        st.metric("Total Meio", total_meio_consolidado)
 
 # Aba "Direita" com sub abas "Direita I", "Direita II" e "Resultado Geral Direita"
 with tab2:
@@ -205,11 +185,13 @@ with tab2:
         total_direita_ii = total_direita1_ii + total_direita2_ii
         total_direita_iii = total_direita1_iii + total_direita2_iii
         total_direita_iv = total_direita1_iv + total_direita2_iv
+        total_direita_consolidado = total_direita_i + total_direita_ii + total_direita_iii + total_direita_iv
 
         st.metric("Total I - Direita", total_direita_i)
         st.metric("Total II - Direita", total_direita_ii)
         st.metric("Total III - Direita", total_direita_iii)
         st.metric("Total IV - Direita", total_direita_iv)
+        st.metric("Total Direita", total_direita_consolidado)
 
 # Aba "Esquerda" com sub abas "Esquerda I", "Esquerda II" e "Resultado Geral Esquerda"
 with tab3:
@@ -231,11 +213,13 @@ with tab3:
         total_esquerda_ii = total_esquerda1_ii + total_esquerda2_ii
         total_esquerda_iii = total_esquerda1_iii + total_esquerda2_iii
         total_esquerda_iv = total_esquerda1_iv + total_esquerda2_iv
+        total_esquerda_consolidado = total_esquerda_i + total_esquerda_ii + total_esquerda_iii + total_esquerda_iv
 
         st.metric("Total I - Esquerda", total_esquerda_i)
         st.metric("Total II - Esquerda", total_esquerda_ii)
         st.metric("Total III - Esquerda", total_esquerda_iii)
         st.metric("Total IV - Esquerda", total_esquerda_iv)
+        st.metric("Total Esquerda", total_esquerda_consolidado)
 
 # Aba "Resultados" consolidada
 with tab4:

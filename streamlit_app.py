@@ -3,6 +3,7 @@ import pandas as pd
 import os
 import time
 import threading
+import plotly.express as px
 
 DATA_DIR = "local_storage"
 ttl_arquivos_maximo = 10 #horas
@@ -231,20 +232,25 @@ with tab4:
         total_direita_i, total_direita_ii, total_direita_iii, total_direita_iv,
         total_esquerda_i, total_esquerda_ii, total_esquerda_iii, total_esquerda_iv
     )
-    
-    # Exibindo os resultados gerais
-    st.metric("Total Geral I", total_geral_i)
-    st.metric("Total Geral II", total_geral_ii)
-    st.metric("Total Geral III", total_geral_iii)
-    st.metric("Total Geral IV", total_geral_iv)
-    st.metric("Total Consolidado", total_geral)
-    st.metric("Coeficiente Geral", round(coeficiente_geral, 2))
 
-    # Preparando dados para exportar como Excel
-    df_consolidado = pd.DataFrame({
-        'Total Geral I': [total_geral_i],
-        'Total Geral II': [total_geral_ii],
-        'Total Geral III': [total_geral_iii],
-        'Total Geral IV': [total_geral_iv],
-        'Coeficiente Geral': [coeficiente_geral]
-    })
+    # Layout responsivo com 2 colunas (ajuste de tamanho)
+    col1, col2 = st.columns([2, 2], gap="large")
+    
+    with col1:
+        # Exibindo os resultados gerais
+        st.metric("Total Geral I", total_geral_i)
+        st.metric("Total Geral II", total_geral_ii)
+        st.metric("Total Geral III", total_geral_iii)
+        st.metric("Total Geral IV", total_geral_iv)
+        st.metric("Total Consolidado", total_geral)
+        st.metric("Coeficiente Geral", round(coeficiente_geral, 2))
+
+    with col2:
+        # Gráfico de Pizza
+        df_pizza = pd.DataFrame({
+            "Categoria": ["Total Geral I", "Total Geral II", "Total Geral III", "Total Geral IV"],
+            "Total": [total_geral_i, total_geral_ii, total_geral_iii, total_geral_iv]
+        })
+        
+        fig = px.pie(df_pizza, names='Categoria', values='Total')
+        st.plotly_chart(fig)

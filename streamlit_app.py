@@ -134,9 +134,9 @@ st.title("Contagem Unidades Foliculares")
 tab1, tab2, tab3, tab4 = st.tabs(["Meio", "Direita", "Esquerda", "Resultados"])
 
 # Variáveis globais para armazenar os valores de cada aba
-total_meio_i, total_meio_ii, total_meio_iii, total_meio_iv = 0, 0, 0, 0
-total_direita_i, total_direita_ii, total_direita_iii, total_direita_iv = 0, 0, 0, 0
-total_esquerda_i, total_esquerda_ii, total_esquerda_iii, total_esquerda_iv = 0, 0, 0, 0
+total_meio_i, total_meio_ii, total_meio_iii, total_meio_iv, total_coef_meio = 0, 0, 0, 0, 0
+total_direita_i, total_direita_ii, total_direita_iii, total_direita_iv, total_coef_direita = 0, 0, 0, 0, 0
+total_esquerda_i, total_esquerda_ii, total_esquerda_iii, total_esquerda_iv, total_coef_esquerda = 0, 0, 0, 0, 0
 
 # Aba "Meio" com sub abas "Meio I", "Meio II" e "Resultado Geral Meio"
 with tab1:
@@ -145,11 +145,11 @@ with tab1:
     
     with sub_tab1:
         #st.subheader("Sub Aba - Meio I")
-        total_meio1_i, total_meio1_ii, total_meio1_iii, total_meio1_iv, _, _ = exibir_aba("Meio I")
+        total_meio1_i, total_meio1_ii, total_meio1_iii, total_meio1_iv, _, coef_meio1 = exibir_aba("Meio I")
     
     with sub_tab2:
         #st.subheader("Sub Aba - Meio II")
-        total_meio2_i, total_meio2_ii, total_meio2_iii, total_meio2_iv, _, _ = exibir_aba("Meio II")
+        total_meio2_i, total_meio2_ii, total_meio2_iii, total_meio2_iv, _, coef_meio2 = exibir_aba("Meio II")
     
     with sub_tab3:
         st.subheader("Resultado Geral Meio")
@@ -158,6 +158,7 @@ with tab1:
         total_meio_ii = total_meio1_ii + total_meio2_ii
         total_meio_iii = total_meio1_iii + total_meio2_iii
         total_meio_iv = total_meio1_iv + total_meio2_iv
+        total_coef_meio = coef_meio1 + coef_meio2
         total_meio_consolidado = total_meio_i + total_meio_ii + total_meio_iii + total_meio_iv
 
         st.metric("Total I - Meio", total_meio_i)
@@ -165,6 +166,7 @@ with tab1:
         st.metric("Total III - Meio", total_meio_iii)
         st.metric("Total IV - Meio", total_meio_iv)
         st.metric("Total Meio", total_meio_consolidado)
+        st.metric("Coeficiente Meio", round(total_coef_meio, 2))
 
 # Aba "Direita" com sub abas "Direita I", "Direita II" e "Resultado Geral Direita"
 with tab2:
@@ -173,11 +175,11 @@ with tab2:
     
     with sub_tab1:
         #st.subheader("Sub Aba - Direita I")
-        total_direita1_i, total_direita1_ii, total_direita1_iii, total_direita1_iv, _, _ = exibir_aba("Direita I")
+        total_direita1_i, total_direita1_ii, total_direita1_iii, total_direita1_iv, _, coef_direita1 = exibir_aba("Direita I")
     
     with sub_tab2:
         #st.subheader("Sub Aba - Direita II")
-        total_direita2_i, total_direita2_ii, total_direita2_iii, total_direita2_iv, _, _ = exibir_aba("Direita II")
+        total_direita2_i, total_direita2_ii, total_direita2_iii, total_direita2_iv, _, coef_direita2 = exibir_aba("Direita II")
     
     with sub_tab3:
         st.subheader("Resultado Geral Direita")
@@ -186,6 +188,7 @@ with tab2:
         total_direita_ii = total_direita1_ii + total_direita2_ii
         total_direita_iii = total_direita1_iii + total_direita2_iii
         total_direita_iv = total_direita1_iv + total_direita2_iv
+        total_coef_direita = coef_direita1 + coef_direita2
         total_direita_consolidado = total_direita_i + total_direita_ii + total_direita_iii + total_direita_iv
 
         st.metric("Total I - Direita", total_direita_i)
@@ -193,6 +196,8 @@ with tab2:
         st.metric("Total III - Direita", total_direita_iii)
         st.metric("Total IV - Direita", total_direita_iv)
         st.metric("Total Direita", total_direita_consolidado)
+        st.metric("Coeficiente Direita", round(total_coef_direita, 2))
+
 
 # Aba "Esquerda" com sub abas "Esquerda I", "Esquerda II" e "Resultado Geral Esquerda"
 with tab3:
@@ -201,11 +206,11 @@ with tab3:
     
     with sub_tab1:
         #st.subheader("Sub Aba - Esquerda I")
-        total_esquerda1_i, total_esquerda1_ii, total_esquerda1_iii, total_esquerda1_iv, _, _ = exibir_aba("Esquerda I")
+        total_esquerda1_i, total_esquerda1_ii, total_esquerda1_iii, total_esquerda1_iv, _, coef_esquerda1 = exibir_aba("Esquerda I")
     
     with sub_tab2:
         #st.subheader("Sub Aba - Esquerda II")
-        total_esquerda2_i, total_esquerda2_ii, total_esquerda2_iii, total_esquerda2_iv, _, _ = exibir_aba("Esquerda II")
+        total_esquerda2_i, total_esquerda2_ii, total_esquerda2_iii, total_esquerda2_iv, _, coef_esquerda2 = exibir_aba("Esquerda II")
     
     with sub_tab3:
         st.subheader("Resultado Geral Esquerda")
@@ -214,6 +219,7 @@ with tab3:
         total_esquerda_ii = total_esquerda1_ii + total_esquerda2_ii
         total_esquerda_iii = total_esquerda1_iii + total_esquerda2_iii
         total_esquerda_iv = total_esquerda1_iv + total_esquerda2_iv
+        total_coef_esquerda = coef_esquerda1 + coef_esquerda2
         total_esquerda_consolidado = total_esquerda_i + total_esquerda_ii + total_esquerda_iii + total_esquerda_iv
 
         st.metric("Total I - Esquerda", total_esquerda_i)
@@ -221,6 +227,7 @@ with tab3:
         st.metric("Total III - Esquerda", total_esquerda_iii)
         st.metric("Total IV - Esquerda", total_esquerda_iv)
         st.metric("Total Esquerda", total_esquerda_consolidado)
+        st.metric("Coeficiente Esquerda", round(total_coef_esquerda, 2))
 
 # Aba "Resultados" consolidada
 with tab4:
